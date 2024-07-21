@@ -14,3 +14,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'alcohol',
             'weed',
         )
+
+class PossibleAttendeesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Registration
+        fields = (
+            'name',
+            'phone',
+            'registered_attendee',
+        )
