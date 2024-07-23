@@ -1,6 +1,8 @@
 from django.test import TestCase
 
 from rest_framework.test import APIRequestFactory
+
+from applications.registration.tests.factories import PossibleAttendeesFactory
 from applications.registration.viewsets import RegistrationViewSet
 
 
@@ -9,10 +11,12 @@ class TestRegistration(TestCase):
         self.factory = APIRequestFactory()
 
     def test_registration_post_complete_payload(self):
+        possible_attendee = PossibleAttendeesFactory()
         complete_payload = {
+            "possible_attendee": possible_attendee.id,
             "name": "ma0",
             "phone": "1234567890",
-            "whatsapp_number": "",
+            "whatsapp_number": "1234567890",
             "extra_attendees": 0,
             "alcohol": "N",
             "weed": "N"

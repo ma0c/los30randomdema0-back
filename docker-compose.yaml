@@ -16,6 +16,8 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    stdin_open: true
+    tty: true
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
