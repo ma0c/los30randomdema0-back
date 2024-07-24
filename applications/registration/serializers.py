@@ -20,6 +20,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     weed = serializers.CharField(required=False, default='N')
     vegetarian = serializers.CharField(required=False, default='N')
     is_confirmed = serializers.BooleanField(default=True)
+
     class Meta:
         model = Registration
         fields = (
