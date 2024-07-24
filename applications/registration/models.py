@@ -17,7 +17,7 @@ class Registration(BaseModel):
     """
     This model represents the concrete registration to the event
     """
-    possible_attendee = models.ForeignKey(PossibleAttendees, on_delete=models.CASCADE, null=True)
+    possible_attendee = models.OneToOneField(PossibleAttendees, related_name="registered_attendee", on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=20)
     whatsapp_number = models.CharField(max_length=20, blank=True)

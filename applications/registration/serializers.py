@@ -2,13 +2,16 @@ from rest_framework import serializers
 
 from applications.registration.models import Registration, PossibleAttendees
 
+
 class PossibleAttendeesSerializer(serializers.ModelSerializer):
+    registered_attendee = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = PossibleAttendees
         fields = (
             'id',
             'name',
             'phone',
+            'registered_attendee'
         )
 
 

@@ -75,3 +75,15 @@ class TestRegistration(TestCase):
         response = RegistrationViewSet.as_view({'put': 'update'})(request, pk=response.data['id'])
         assert response.status_code == 200
         assert response.data['whatsapp_number'] == payload['whatsapp_number']
+
+    def test_get_registered_attendee_in_possible_attendee_payload(self):
+        payload = deepcopy(self.complete_payload)
+        request = self.factory.post('/registration/', payload, format='json')
+        response = RegistrationViewSet.as_view({'post': 'create'})(request)
+        assert response.status_code == 201
+        registration_id = response.data['id']
+
+        request = self.factory.get('/possible_attendees/')
+        response = PossibleAttendeesViewSet.as_view({'get': 'list'})(request)
+        assert response.status_code == 200
+        assert str(response.data[0]['registered_attendee']) == registration_id
