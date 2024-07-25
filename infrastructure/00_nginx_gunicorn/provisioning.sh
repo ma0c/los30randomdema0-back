@@ -8,7 +8,9 @@ sudo apt install -y \
   postgresql-client-common \
   libpq-dev \
   postgresql-client-16 \
-  direnv
+  direnv \
+  nginx \
+  gunicorn
 mkdir -p projects
 cd projects
 git clone https://github.com/ma0c/los30randomdema0-back.git
