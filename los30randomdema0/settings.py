@@ -14,6 +14,7 @@ from pathlib import Path
 import sys
 import os
 
+from storages.backends.s3boto3 import S3Boto3Storage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qh)rcqp&&!xq9f-xmvh25e7$@o40^o^b)_z=yh&)gb$!#wctl0'
+SECRET_KEY = os.getenv("SECRET_KEY", 'django-insecure-qh)rcqp&&!xq9f-xmvh25e7$@o40^o^b)_z=yh&)gb$!#wctl0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -141,8 +142,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+
+# Tell Django to use the S3Boto3 storage class for static files.
+# Set the static and media files locations
+STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
+
+
+# Define custom storage classes for static and media files
+class StaticStorage(S3Boto3Storage):
+    location = STATICFILES_LOCATION
+
+
+class MediaStorage(S3Boto3Storage):
+    location = MEDIAFILES_LOCATION
+    file_overwrite = False
+
+
+# Configure static and media files storage
+STATICFILES_STORAGE = 'los30randomdema0.settings.StaticStorage'
+DEFAULT_FILE_STORAGE = 'los30randomdema0.settings.MediaStorage'
+
+# Set static and media URLs
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{STATICFILES_LOCATION}/'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
