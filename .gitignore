@@ -5,3 +5,5 @@ __pycache__
 data
 
 .envrc
+
+infrastructure/00_nginx_gunicorn/*.conf

@@ -23,6 +23,10 @@ pip install -r requirements.txt
 sudo su
 touch /etc/systemd/system/gunicorn.socket
 
+cat > /etc/gunicorn/back.los30randomdema0.com.conf <<EOL
+SEE back.los30randomdema0.com.conf
+EOL
+
 cat > /etc/systemd/system/gunicorn.socket <<EOL
 [Unit]
 Description=gunicorn socket
@@ -43,6 +47,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
+EnvironmentFile=/etc/gunicorn/back.los30randomdema0.com.conf
 WorkingDirectory=/home/ubuntu/projects/los30randomdema0-back
 ExecStart=/home/ubuntu/projects/los30randomdema0-back/venv/bin/gunicorn \
           --access-logfile - \
@@ -62,7 +67,35 @@ sudo systemctl status gunicorn.socket
 file /run/gunicorn.sock
 sudo journalctl -u gunicorn.socket
 
+# Reload gunicorn
 sudo systemctl daemon-reload
 sudo systemctl restart gunicorn
+
+cat > /etc/nginx/sites-available/back.los30randomdema0.com <<EOL
+server {
+    listen 80;
+    server_name back.los30randomdema0.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/projects/los30randomdema0-back;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+EOL
+
+sudo ln -s /etc/nginx/sites-available/back.los30randomdema0.com /etc/nginx/sites-enabled/
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+sudo usermod -a -G ubuntu www-data
+sudo chown -R :www-data /home/ubuntu/projects/los30randomdema0-back/static
+
+
 
 # using https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu#step-7-creating-systemd-socket-and-service-files-for-gunicorn
