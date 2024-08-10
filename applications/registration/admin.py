@@ -13,7 +13,7 @@ class PossibleAttendeesAdmin(admin.ModelAdmin):
 
     image_tag.short_description = 'Image'
 
-    list_display = ('name', 'phone', "image_tag")
+    list_display = ('name', 'phone', 'slug', 'image_tag')
     search_fields = ('name', 'phone')
 
 

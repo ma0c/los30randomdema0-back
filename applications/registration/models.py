@@ -16,6 +16,8 @@ class PossibleAttendees(BaseModel):
     profile_pic = models.ImageField(upload_to='attendees/', null=True, blank=True)
     slug = models.SlugField(max_length=500, unique=True, null=True)
 
+    def __str__(self):
+        return self.name
 
     class Meta:
         indexes = [
@@ -24,6 +26,7 @@ class PossibleAttendees(BaseModel):
         constraints = [
             models.UniqueConstraint(fields=['name', 'phone'], name='unique_name_phone_constraint')
         ]
+
 
 class Registration(BaseModel):
     """
@@ -44,6 +47,3 @@ class AttendeeToken(BaseModel):
     token = models.CharField(max_length=100)
     attendee = models.ForeignKey(PossibleAttendees, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True, blank=True)

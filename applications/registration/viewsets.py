@@ -1,13 +1,28 @@
 from rest_framework import mixins, viewsets, status
 from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 
 from applications.registration import serializers
+from applications.registration.exceptions import AttendeeAlreadyRegisteredException
 from applications.registration.models import PossibleAttendees, Registration
 
 
-class PossibleAttendeesViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class PossibleAttendeesViewSet(
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = serializers.PossibleAttendeesSerializer
     queryset = serializers.PossibleAttendeesSerializer.Meta.model.objects.all()
+    lookup_field = 'slug'
+
+    def get_object(self):
+        obj = super().get_object()
+        try:
+            registration = obj.registered_attendee
+            raise AttendeeAlreadyRegisteredException(registration)
+        except PossibleAttendees.registered_attendee.RelatedObjectDoesNotExist:
+            pass
+        return obj
 
 
 class RegistrationViewSet(

@@ -4,16 +4,16 @@ from django.test import TestCase
 
 from rest_framework.test import APIRequestFactory
 from rest_framework.exceptions import ErrorDetail
-from applications.registration.tests.factories import PossibleAttendeesFactory
+from applications.registration.tests.factories import PossibleAttendeesFactory, RegistrationFactory
 from applications.registration.viewsets import RegistrationViewSet, PossibleAttendeesViewSet
 
 
 class TestRegistration(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        possible_attendee = PossibleAttendeesFactory()
+        self.possible_attendee = PossibleAttendeesFactory()
         self.complete_payload = {
-            "possible_attendee": possible_attendee.id,
+            "possible_attendee": self.possible_attendee.id,
             "name": "ma0",
             "phone": "1234567890",
             "whatsapp_number": "1234567890",
@@ -21,15 +21,6 @@ class TestRegistration(TestCase):
             "alcohol": "N",
             "weed": "N"
         }
-
-
-    def test_possiblee_attendees_list(self):
-        request = self.factory.get('/possible_attendees/')
-        possible_attendee = PossibleAttendeesFactory()
-        response = PossibleAttendeesViewSet.as_view({'get': 'list'})(request)
-        assert response.status_code == 200
-        assert response.data[0]['name'] == possible_attendee.name
-        assert response.data[0]['phone'] == possible_attendee.phone
 
     def test_registration_post_complete_payload(self):
         payload = deepcopy(self.complete_payload)
@@ -83,7 +74,19 @@ class TestRegistration(TestCase):
         assert response.status_code == 201
         registration_id = response.data['id']
 
-        request = self.factory.get('/possible_attendees/')
-        response = PossibleAttendeesViewSet.as_view({'get': 'list'})(request)
+    def test_retrieve_already_registered_attendee(self):
+        RegistrationFactory(possible_attendee=self.possible_attendee)
+        request = self.factory.get(f'/registration/{self.possible_attendee.slug}')
+        response = PossibleAttendeesViewSet.as_view({'get': 'retrieve'})(request, slug=self.possible_attendee.slug)
+        assert response.status_code == 400
+        assert response.data['detail'] == 'Possible Attendee already exist, update the existing one instead of creating a new one.'
+
+    def test_retrieve_non_registered_attendee(self):
+        request = self.factory.get(f'/registration/{self.possible_attendee.slug}')
+        response = PossibleAttendeesViewSet.as_view({'get': 'retrieve'})(request, slug=self.possible_attendee.slug)
         assert response.status_code == 200
-        assert str(response.data[0]['registered_attendee']) == registration_id
+        assert response.data['name'] == self.possible_attendee.name
+        assert response.data['phone'] == self.possible_attendee.phone
+        assert response.data['instagram'] == self.possible_attendee.instagram
+        assert response.data['profile_pic'] == self.possible_attendee.profile_pic
+        assert response.data['registered_attendee'] is None

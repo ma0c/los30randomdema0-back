@@ -13,7 +13,7 @@ class PossibleAttendeesSerializer(serializers.ModelSerializer):
             'phone',
             'instagram',
             'profile_pic',
-            'registered_attendee'
+            'registered_attendee',
         )
 
 

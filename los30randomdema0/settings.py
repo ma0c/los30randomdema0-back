@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # Third party apps
     'rest_framework',
+    'factory',
 
     # Custom apps
     'applications.registration'
