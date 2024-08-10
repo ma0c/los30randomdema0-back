@@ -18,6 +18,8 @@ services:
       - "8000:8000"
     stdin_open: true
     tty: true
+    env_file:
+      - docker-compose.env
     environment:
       - DB_NAME=postgres
       - DB_USER=postgres

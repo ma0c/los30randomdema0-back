@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from applications.registration.models import PossibleAttendees, Registration
 
@@ -7,7 +8,12 @@ from applications.registration.models import PossibleAttendees, Registration
 
 
 class PossibleAttendeesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'phone')
+    def image_tag(self, obj):
+        return format_html('<img src="{}" width=50 />'.format(obj.profile_pic.url)) if obj.profile_pic else None
+
+    image_tag.short_description = 'Image'
+
+    list_display = ('name', 'phone', "image_tag")
     search_fields = ('name', 'phone')
 
 
