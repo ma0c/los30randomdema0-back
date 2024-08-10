@@ -11,6 +11,8 @@ class PossibleAttendeesSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'phone',
+            'instagram',
+            'profile_pic',
             'registered_attendee'
         )
 
