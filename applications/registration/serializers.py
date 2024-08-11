@@ -24,7 +24,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
     alcohol = serializers.CharField(required=False, default='N')
     weed = serializers.CharField(required=False, default='N')
     vegetarian = serializers.CharField(required=False, default='N')
+    entry_hour = serializers.DateTimeField(required=False)
+    exit_hour = serializers.DateTimeField(required=False)
     is_confirmed = serializers.BooleanField(default=True)
+
+    def validate_entry_hour(self, value):
+        if value < Registration.MIN_ENTRY_DATE or value > Registration.MAX_ENTRY_DATE:
+            raise serializers.ValidationError('Entry hour is out of range')
+        return value
+    def validate_exit_hour(self, value):
+        if value < Registration.MIN_ENTRY_DATE or value > Registration.MAX_ENTRY_DATE:
+            raise serializers.ValidationError('Entry hour is out of range')
+        return value
 
     class Meta:
         model = Registration
@@ -39,6 +50,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'weed',
             'vegetarian',
             'is_confirmed',
+            'entry_hour',
+            'exit_hour',
         )
 
 

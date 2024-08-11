@@ -1,3 +1,5 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from django.db import models
 
 from los30randomdema0.base_model import BaseModel
@@ -32,6 +34,10 @@ class Registration(BaseModel):
     """
     This model represents the concrete registration to the event
     """
+
+    MIN_ENTRY_DATE = datetime(year=2024, month=9, day=14, hour=16, minute=0, tzinfo=ZoneInfo(key='UTC'))
+    MAX_ENTRY_DATE = datetime(year=2024, month=9, day=15, hour=17, minute=0, tzinfo=ZoneInfo(key='UTC'))
+
     possible_attendee = models.OneToOneField(PossibleAttendees, related_name="registered_attendee", on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=500)
     phone = models.CharField(max_length=20)
@@ -40,6 +46,8 @@ class Registration(BaseModel):
     vegetarian = models.CharField(max_length=1, default='N')
     alcohol = models.CharField(max_length=1, blank=True)
     weed = models.CharField(max_length=1)
+    entry_hour = models.DateTimeField(null=True)
+    exit_hour = models.DateTimeField(null=True)
     is_confirmed = models.BooleanField(default=False)
 
 

@@ -90,3 +90,21 @@ class TestRegistration(TestCase):
         assert response.data['instagram'] == self.possible_attendee.instagram
         assert response.data['profile_pic'] == self.possible_attendee.profile_pic
         assert response.data['registered_attendee'] is None
+
+    def test_invalid_entry_time(self):
+        payload = deepcopy(self.complete_payload)
+        payload['entry_hour'] = '2024-09-14T15:59'
+        request = self.factory.post('/registration/', payload, format='json')
+        response = RegistrationViewSet.as_view({'post': 'create'})(request)
+        assert response.status_code == 400
+        assert response.data['entry_hour'][0] == 'Entry hour is out of range'
+
+    def test_valid_entry_exit_times(self):
+        payload = deepcopy(self.complete_payload)
+        payload['entry_hour'] = '2024-09-14T16:00'
+        payload['exit_hour'] = '2024-09-15T17:00'
+        request = self.factory.post('/registration/', payload, format='json')
+        response = RegistrationViewSet.as_view({'post': 'create'})(request)
+        assert response.status_code == 201
+        assert payload['entry_hour'] in response.data['entry_hour']
+        assert payload['exit_hour'] in response.data['exit_hour']
