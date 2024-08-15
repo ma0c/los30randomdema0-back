@@ -5,7 +5,6 @@ from django.db import models
 from los30randomdema0.base_model import BaseModel
 from django.utils.crypto import get_random_string
 
-# Create your models here.
 
 class PossibleAttendees(BaseModel):
     """
@@ -19,6 +18,9 @@ class PossibleAttendees(BaseModel):
     slug = models.SlugField(max_length=500, unique=True, null=True)
 
     def __str__(self):
+        return self.name
+
+    def __repr__(self):
         return self.name
 
     class Meta:
@@ -46,9 +48,11 @@ class Registration(BaseModel):
     vegetarian = models.CharField(max_length=1, default='N')
     alcohol = models.CharField(max_length=1, blank=True)
     weed = models.CharField(max_length=1)
-    entry_hour = models.DateTimeField(null=True)
-    exit_hour = models.DateTimeField(null=True)
-    is_confirmed = models.BooleanField(default=False)
+    entry_hour = models.DateTimeField(null=True, blank=True)
+    exit_hour = models.DateTimeField(null=True, blank=True)
+    is_confirmed = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=500, unique=True, null=True)
+    instagram = models.CharField(max_length=100, blank=True)
 
 
 class AttendeeToken(BaseModel):

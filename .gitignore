@@ -11,3 +11,7 @@ infrastructure/00_nginx_gunicorn/*.conf
 docker-compose.env
 
 invitados.csv
+
+.DS_Store
+
+profile_pics

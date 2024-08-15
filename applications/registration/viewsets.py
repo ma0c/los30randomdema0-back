@@ -33,6 +33,7 @@ class RegistrationViewSet(
 ):
     serializer_class = serializers.RegistrationSerializer
     queryset = serializers.RegistrationSerializer.Meta.model.objects.all()
+    lookup_field = 'slug'
 
     @staticmethod
     def validate_possible_attendee_exists(possible_attendee_id):
@@ -51,3 +52,10 @@ class RegistrationViewSet(
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class UpdateProfilePicViewSet(
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
+    serializer_class = serializers.PossibleAttendeeProfilePicSerializer
+    queryset = serializers.PossibleAttendeesSerializer.Meta.model.objects.all()
+    lookup_field = 'slug'

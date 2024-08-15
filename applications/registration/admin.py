@@ -18,7 +18,7 @@ class PossibleAttendeesAdmin(admin.ModelAdmin):
 
 
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'possible_attendee', 'name', 'phone', 'whatsapp_number', 'extra_attendees', 'vegetarian', 'alcohol', 'weed', 'is_confirmed')
+    list_display = ('slug', 'possible_attendee', 'name', 'phone', 'whatsapp_number', 'extra_attendees', 'vegetarian', 'alcohol', 'weed', 'is_confirmed')
     search_fields = ('name', 'phone')
 
 admin.site.register(PossibleAttendees, PossibleAttendeesAdmin)
