@@ -48,6 +48,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Entry hour is out of range')
         return value
     def validate_exit_hour(self, value):
+        print(value, Registration.MIN_ENTRY_DATE, Registration.MAX_ENTRY_DATE)
         if value < Registration.MIN_ENTRY_DATE or value > Registration.MAX_ENTRY_DATE:
             raise serializers.ValidationError('Entry hour is out of range')
         return value

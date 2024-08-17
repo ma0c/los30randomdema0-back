@@ -38,7 +38,7 @@ class Registration(BaseModel):
     """
 
     MIN_ENTRY_DATE = datetime(year=2024, month=9, day=14, hour=16, minute=0, tzinfo=ZoneInfo(key='UTC'))
-    MAX_ENTRY_DATE = datetime(year=2024, month=9, day=15, hour=17, minute=0, tzinfo=ZoneInfo(key='UTC'))
+    MAX_ENTRY_DATE = datetime(year=2024, month=9, day=15, hour=22, minute=0, tzinfo=ZoneInfo(key='UTC'))
 
     possible_attendee = models.OneToOneField(PossibleAttendees, related_name="registered_attendee", on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=500)
