@@ -15,7 +15,6 @@ class PossibleAttendeesAdmin(admin.ModelAdmin):
 
     def qr_code(self, obj):
         img = qrcode.make(obj.slug, image_factory=SvgPathImage)
-        # img = img.make_image(fill_color="white")
         img_string = img.to_string(encoding='unicode')
         return format_html(img_string)
 
