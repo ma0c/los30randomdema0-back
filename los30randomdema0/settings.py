@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'factory',
 
     # Custom apps
-    'applications.registration'
+    'applications.registration',
+    'applications.pokedex'
 ]
 
 MIDDLEWARE = [

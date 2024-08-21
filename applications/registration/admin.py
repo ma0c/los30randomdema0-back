@@ -21,8 +21,6 @@ class PossibleAttendeesAdmin(admin.ModelAdmin):
     image_tag.short_description = 'Image'
     qr_code.short_description = 'QR Code'
 
-
-
     list_display = ('name', 'phone', 'slug', 'image_tag', 'qr_code')
     search_fields = ('name', 'phone')
 

@@ -5,12 +5,14 @@ __pycache__
 data
 
 .envrc
+.env
 
 infrastructure/00_nginx_gunicorn/*.conf
 
 docker-compose.env
 
 invitados.csv
+attendees_v1.csv
 
 .DS_Store
 
