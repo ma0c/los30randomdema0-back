@@ -8,8 +8,6 @@ from applications.pokedex.models import Badge, Profile, Connection
 
 class ProfileAdmin(admin.ModelAdmin):
     def badge_list(self, obj):
-        print(obj)
-        print(obj.badges.all())
         return format_html("-".join(
             [
                 f"<img src='{badge.image.url if badge.image else None}' alt='{badge.name}' width=30 />"
@@ -22,7 +20,7 @@ class ProfileAdmin(admin.ModelAdmin):
         return format_html('<img src="{}" width=50 />'.format(obj.attendee.profile_pic.url)) if obj.attendee.profile_pic else None
 
 
-    list_display = ('attendee', 'image_tag', 'badge_list')
+    list_display = ('attendee', 'image_tag', 'badge_list', 'is_enabled')
     search_fields = ('attendee__name',)
 
 
