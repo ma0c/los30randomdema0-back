@@ -23,7 +23,7 @@ class Badge(models.Model):
 
 
 class Profile(BaseModel):
-    attendee = models.OneToOneField('registration.PossibleAttendees', on_delete=models.CASCADE)
+    attendee = models.OneToOneField('registration.PossibleAttendees', related_name="profile", on_delete=models.CASCADE)
     badges = models.ManyToManyField(Badge, related_name='profiles')
     is_enabled = models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)

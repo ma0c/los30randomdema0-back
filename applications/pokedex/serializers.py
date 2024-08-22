@@ -1,4 +1,7 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.relations import SlugRelatedField
+from rest_framework.serializers import ModelSerializer, HiddenField
+
+from applications.pokedex.fields import CurrentProfileDefault
 from applications.pokedex.models import Badge, Profile, Connection
 from applications.registration import serializers as registration_serializers
 
@@ -34,7 +37,12 @@ class PokedexSerializer(ModelSerializer):
         )
 
 
-class ConnectionSerializer(ModelSerializer):
+class CreateConnectionSerializer(ModelSerializer):
+    follower = HiddenField(default=CurrentProfileDefault())
+    followed = SlugRelatedField(slug_field="attendee__slug", queryset=Profile.objects.all())
     class Meta:
         model = Connection
-        fields = "__all__"
+        fields = (
+            'followed',
+            'follower'
+        )

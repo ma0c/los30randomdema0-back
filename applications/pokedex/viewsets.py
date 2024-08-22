@@ -92,13 +92,7 @@ class ConnectionViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
-    serializer_class = serializers.ConnectionSerializer
-    queryset = serializers.ConnectionSerializer.Meta.model.objects.all()
-    lookup_field = 'slug'
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    serializer_class = serializers.CreateConnectionSerializer
+    queryset = models.Connection.objects.all()
+    authentication_classes = [registration_mixin.TokenAuthentication]
+    permission_classes = [registration_mixin.IsAuthenticated]
