@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from applications.registration.models import PossibleAttendees, Registration
+from applications.registration.models import PossibleAttendees, Registration, AttendeeToken
 import qrcode
 from qrcode.image.svg import SvgPathImage
 
@@ -31,3 +31,4 @@ class RegistrationAdmin(admin.ModelAdmin):
 
 admin.site.register(PossibleAttendees, PossibleAttendeesAdmin)
 admin.site.register(Registration, RegistrationAdmin)
+admin.site.register(AttendeeToken)

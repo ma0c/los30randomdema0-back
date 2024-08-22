@@ -59,3 +59,6 @@ class AttendeeToken(BaseModel):
     token = models.CharField(max_length=100)
     attendee = models.ForeignKey(PossibleAttendees, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.attendee} - {self.token}"

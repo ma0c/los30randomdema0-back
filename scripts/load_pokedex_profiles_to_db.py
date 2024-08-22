@@ -47,7 +47,7 @@ def load_pokedex_profiles(file: str):
 
     with open(file, "r") as f:
         reader = csv.DictReader(f)
-        for row in reader:
+        for index, row in enumerate(reader):
             name, phone = row["Nombre Completo"], row["WP"]
             phone = phone.replace('"', "")
             possible_attendee = PossibleAttendees.objects.filter(phone=phone).all()
@@ -66,6 +66,10 @@ def load_pokedex_profiles(file: str):
                     badge = badges_dict[badge_name]
                     profile.badges.add(badge)
                     LOGGER.info(f"Badge {badge_name} added to {name}")
+
+            if not profile.number:
+                profile.number = index + 1
+                profile.save()
 
 
 if __name__ == "__main__":

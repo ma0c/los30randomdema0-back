@@ -26,3 +26,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(Badge)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Connection)

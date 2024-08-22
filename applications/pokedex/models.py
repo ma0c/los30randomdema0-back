@@ -21,11 +21,13 @@ class Badge(models.Model):
             models.UniqueConstraint(fields=['name'], name='unique_name_constraint')
         ]
 
+
 class Profile(BaseModel):
     attendee = models.OneToOneField('registration.PossibleAttendees', on_delete=models.CASCADE)
     badges = models.ManyToManyField(Badge, related_name='profiles')
     is_enabled = models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)
+    number = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.attendee.name
@@ -45,3 +47,11 @@ class Connection(BaseModel):
 
     def __str__(self):
         return f"{self.follower.attendee.name} follows {self.followed.attendee.name}"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['follower', 'followed'], name='unique_follower_followed_index')
+        ]
+        constraints = [
+            models.UniqueConstraint(fields=['follower', 'followed'], name='unique_follower_followed_constraint')
+        ]
