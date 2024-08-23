@@ -1,5 +1,5 @@
 from rest_framework.relations import SlugRelatedField
-from rest_framework.serializers import ModelSerializer, HiddenField
+from rest_framework.serializers import ModelSerializer, HiddenField, ValidationError
 
 from applications.pokedex.fields import CurrentProfileDefault
 from applications.pokedex.models import Badge, Profile, Connection
@@ -40,6 +40,11 @@ class PokedexSerializer(ModelSerializer):
 class CreateConnectionSerializer(ModelSerializer):
     follower = HiddenField(default=CurrentProfileDefault())
     followed = SlugRelatedField(slug_field="attendee__slug", queryset=Profile.objects.all())
+
+    def validate_followed(self, value):
+        if value == self.context['request'].user.profile:
+            raise ValidationError("You cannot follow yourself.")
+        return value
     class Meta:
         model = Connection
         fields = (

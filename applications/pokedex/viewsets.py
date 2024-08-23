@@ -1,7 +1,7 @@
 
 from django.db.models import Q
 from django.db import connection
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets
 from rest_framework.response import Response
 
 from applications.pokedex import serializers, models, mixins as pokedex_mixins
@@ -18,6 +18,8 @@ class ProfileViewSet(
     serializer_class = serializers.ProfileSerializer
     queryset = serializers.ProfileSerializer.Meta.model.objects.all()
     lookup_field = 'attendee__slug'
+
+
 
 
 class PokedexViewSet(
@@ -96,3 +98,7 @@ class ConnectionViewSet(
     queryset = models.Connection.objects.all()
     authentication_classes = [registration_mixin.TokenAuthentication]
     permission_classes = [registration_mixin.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        print(serializer)
+        # serializer.save()
