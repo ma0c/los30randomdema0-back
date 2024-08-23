@@ -1,0 +1,39 @@
+{% extends 'analytics/base.html' %}
+{% block title %}
+    Reporte de registros
+{% endblock %}
+{% block content %}
+    <h1 class="title">Reporte de registros</h1>
+    <table class="table is-fullwidth sortable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>+1</th>
+                <th>Vegetarian</th>
+                <th>Alcohol</th>
+                <th>Weed</th>
+                <th>Entry Hour</th>
+                <th>Exit Hour</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registration in registrations %}
+                <tr>
+                    <td>{{ registration.name }}</td>
+                    <td>{{ registration.phone }}</td>
+                    <td>{{ registration.extra_attendees }}</td>
+                    <td>{{ registration.get_vegetarian_display }}</td>
+                    <td>{{ registration.get_alcohol_display }}</td>
+                    <td>{{ registration.get_weed_display }}</td>
+                    <td>{{ registration.entry_hour|date:"D h a" }}</td>
+                    <td>{{ registration.exit_hour|date:"D h a" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block custom_scripts %}
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+{% endblock %}
