@@ -33,7 +33,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '54.172.140.225',
     '.los30randomdema0.com',
-    'back.los30randomdema0.com'
+    'back.los30randomdema0.com',
+    '192.168.4.45'
 
 ]
 

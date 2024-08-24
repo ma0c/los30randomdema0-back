@@ -20,7 +20,7 @@ class ProfileAdmin(admin.ModelAdmin):
         return format_html('<img src="{}" width=50 />'.format(obj.attendee.profile_pic.url)) if obj.attendee.profile_pic else None
 
 
-    list_display = ('attendee', 'image_tag', 'badge_list', 'is_enabled')
+    list_display = ('number', 'attendee', 'image_tag', 'badge_list', 'is_enabled')
     search_fields = ('attendee__name',)
 
 class BadgeAdmin(admin.ModelAdmin):

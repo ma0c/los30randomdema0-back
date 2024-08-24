@@ -101,4 +101,4 @@ class ConnectionViewSet(
 
     def perform_create(self, serializer):
         print(serializer)
-        # serializer.save()
+        serializer.save()
