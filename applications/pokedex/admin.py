@@ -23,7 +23,13 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('attendee', 'image_tag', 'badge_list', 'is_enabled')
     search_fields = ('attendee__name',)
 
+class BadgeAdmin(admin.ModelAdmin):
+    def image_tag(self, obj):
+        return format_html('<img src="{}" width=50 />'.format(obj.image.url)) if obj.image else None
+    list_display = ('name', 'image_tag')
+    search_fields = ('name',)
 
-admin.site.register(Badge)
+
+admin.site.register(Badge, BadgeAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Connection)
