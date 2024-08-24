@@ -1,0 +1,36 @@
+{% extends 'analytics/base.html' %}
+{% block title %}
+    Posibles asistentes
+{% endblock %}
+{% block content %}
+    <h1 class="title">Possible Attendees</h1>
+    <table class="table is-fullwidth sortable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Whatsapp</th>
+                <th>Instagram</th>
+                <th>Profile Pic</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attendee in possible_attendees %}
+                <tr>
+                    <td>
+                        <a href="{% url 'analytics:attendee-profile' attendee.slug %}">
+                            {{ attendee.name }}
+                        </a>
+                    </td>
+                    <td>{{ attendee.phone }}</td>
+                    <td>{{ attendee.instagram }}</td>
+                    <td>
+                        <figure class="image is-128x128">
+                            {% if attendee.profile_pic %}
+                                <img src="{{ attendee.profile_pic.url }}" alt="{{ attendee.name }}">
+                            {% endif %}
+                        </figure>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+{% endblock %}

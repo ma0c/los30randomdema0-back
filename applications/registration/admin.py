@@ -14,7 +14,7 @@ class PossibleAttendeesAdmin(admin.ModelAdmin):
         return format_html('<img src="{}" width=50 />'.format(obj.profile_pic.url)) if obj.profile_pic else None
 
     def qr_code(self, obj):
-        img = qrcode.make(obj.slug, image_factory=SvgPathImage)
+        img = qrcode.make(obj.slug, image_factory=SvgPathImage, fill_color="black")
         img_string = img.to_string(encoding='unicode')
         return format_html(img_string)
 

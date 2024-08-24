@@ -1,0 +1,28 @@
+{% extends 'analytics/base.html' %}
+{% block content %}
+    <h1 class="title">Attendee Profile</h1>
+    <div class="columns">
+        <div class="column is-one-third">
+            <figure class="image is-256x256">
+                {% if attendee.profile_pic %}
+                    <img src="{{ attendee.profile_pic.url }}" alt="{{ attendee.name }}">
+                {% endif %}
+            </figure>
+        </div>
+        <div class="column">
+            <p><strong>Name:</strong> {{ attendee.name }}</p>
+            <p><strong>Whatsapp:</strong> {{ attendee.phone }}</p>
+            <p><strong>Instagram:</strong> {{ attendee.instagram }}</p>
+            <p><strong>Vegetarian:</strong> {{ registration.get_vegetarian_display }}</p>
+            <p><strong>Alcohol:</strong> {{ registration.get_alcohol_display }}</p>
+            <p><strong>Weed:</strong> {{ registration.get_weed_display }}</p>
+            <p><strong>Entry Hour:</strong> {{ registration.entry_hour|date:"D h a" }}</p>
+            <p><strong>Exit Hour:</strong> {{ registration.exit_hour|date:"D h a" }}</p>
+        </div>
+        <div class="column is-one-third theme-light">
+            <figure class="image is-256x256">
+                    {{ qr }}
+            </figure>
+        </div>
+    </div>
+{% endblock %}
