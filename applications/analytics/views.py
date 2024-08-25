@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from qrcode.image.svg import SvgPathImage
 
 from applications.registration.models import Registration, PossibleAttendees
+from applications.pokedex.models import Badge, Profile, Connection
 
 
 # Create your views here.
@@ -43,4 +44,11 @@ class AttendeeProfile(DetailView):
         img = qrcode.make(self.object.slug, image_factory=CustomSvgPathImage, box_size=20)
         img_string = img.to_string(encoding='unicode')
         context['qr'] = format_html(img_string)
+        context['profile'] = self.object.profile
+        context['followers'] = Connection.objects.filter(followed=self.object.profile)
+        context['following'] = Connection.objects.filter(follower=self.object.profile)
+        context['total_active_profiles'] = Profile.objects.filter(
+            # is_active=True,
+            is_enabled=True
+        ).count()
         return context

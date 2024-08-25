@@ -61,7 +61,9 @@ WHERE connection.follower_id = '9a950263-d13d-417b-a3ed-0cf80c8e0abe' OR connect
         But django ORM is not capable of doing this. So we'll have to do it in two steps.
         """
         queryset = models.Profile.objects.filter(
-            ~Q(id=self.me.id)
+            ~Q(id=self.me.id),
+            is_enabled=True,
+            is_active=True
         ).prefetch_related(
             "attendee",
             "badges",
@@ -100,5 +102,4 @@ class ConnectionViewSet(
     permission_classes = [registration_mixin.IsAuthenticated]
 
     def perform_create(self, serializer):
-        print(serializer)
         serializer.save()

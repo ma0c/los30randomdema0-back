@@ -8,7 +8,18 @@
                     <img src="{{ attendee.profile_pic.url }}" alt="{{ attendee.name }}">
                 {% endif %}
             </figure>
+            <div class="columns is-multiline is-centered" style="background: aliceblue">
+                {% for badge in profile.badges.all %}
+                    <div class="column">
+                        <figure class="image is-32x32">
+                            <img src="{{ badge.image.url }}" alt="{{ badge.name }}">
+                        </figure>
+                    </div>
+
+                {% endfor %}
+            </div>
         </div>
+
         <div class="column">
             <p><strong>Name:</strong> {{ attendee.name }}</p>
             <p><strong>Whatsapp:</strong> {{ attendee.phone }}</p>
@@ -24,5 +35,39 @@
                     {{ qr }}
             </figure>
         </div>
+    </div>
+    <h2>Following {{ following|length }}/{{ total_active_profiles }}</h2>
+    <div class="grid">
+        {% for connection in following %}
+            <div class="cell">
+                {% if connection.followed.attendee.profile_pic %}
+                <figure class="image is-128x128">
+                    <img src="{{ connection.followed.attendee.profile_pic.url }}" alt="{{  connection.followed.attendee.slug }}">
+                </figure>
+                {% endif %}
+                <p>
+                    <a href="{% url 'analytics:attendee-profile' connection.followed.attendee.slug %}">
+                        {{ connection.followed.attendee.name }}
+                    </a>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2>Followers {{ followers|length }}/{{ total_active_profiles }}</h2>
+    <div class="grid">
+        {% for connection in followers %}
+            <div class="cell">
+                {% if connection.followed.attendee.profile_pic %}
+                <figure class="image is-128x128">
+                    <img src="{{ connection.followed.attendee.profile_pic.url }}" alt="{{  connection.followed.attendee.slug }}">
+                </figure>
+                {% endif %}
+                <p>
+                    <a href="{% url 'analytics:attendee-profile' connection.followed.attendee.slug %}">
+                        {{ connection.followed.attendee.name }}
+                    </a>
+                </p>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
