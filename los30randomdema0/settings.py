@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     # Custom apps
     'applications.registration',
     'applications.pokedex',
-    'applications.analytics'
+    'applications.analytics',
+    'applications.sakura',
 ]
 
 MIDDLEWARE = [

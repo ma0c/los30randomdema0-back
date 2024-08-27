@@ -13,8 +13,10 @@ docker-compose.env
 
 invitados.csv
 attendees_v1.csv
+preguntas_sakura.csv
 
 .DS_Store
 
 profile_pics
 badges
+sakura_qrs
