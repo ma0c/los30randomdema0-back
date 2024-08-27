@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', include(('applications.registration.urls', 'registration'), namespace='registration')),
     path('pokedex/', include(('applications.pokedex.urls', 'pokedex'), namespace='pokedex')),
-    path('analytics/', include(('applications.analytics.urls', 'analytics'), namespace='analytics'))
+    path('analytics/', include(('applications.analytics.urls', 'analytics'), namespace='analytics')),
+    path('sakura/', include(('applications.sakura.urls', 'sakura'), namespace='sakura')),
 ]

@@ -10,8 +10,7 @@ class TokenAuthentication(authentication.TokenAuthentication):
 
     def authenticate_credentials(self, key):
         model = self.get_model()
-        print(model)
-        print(key)
+
         try:
             token = model.objects.select_related('attendee').get(token=key)
         except model.DoesNotExist:

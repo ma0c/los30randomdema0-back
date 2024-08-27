@@ -6,29 +6,27 @@ from rest_framework.response import Response
 
 from applications.pokedex import serializers, models, mixins as pokedex_mixins
 from applications.registration import authentication as registration_mixin
+from applications.registration.mixins import IsAuthenticatedAppMixin
 
 
 class ProfileViewSet(
+    IsAuthenticatedAppMixin,
     mixins.RetrieveModelMixin,
     pokedex_mixins.GetProfileFromAuthenticationMixin,
     viewsets.GenericViewSet
-    ):
-    authentication_classes = [registration_mixin.TokenAuthentication]
-    permission_classes = [registration_mixin.IsAuthenticated]
+):
+
     serializer_class = serializers.ProfileSerializer
     queryset = serializers.ProfileSerializer.Meta.model.objects.all()
     lookup_field = 'attendee__slug'
 
 
-
-
 class PokedexViewSet(
+    IsAuthenticatedAppMixin,
     mixins.ListModelMixin,
     pokedex_mixins.GetProfileFromAuthenticationMixin,
     viewsets.GenericViewSet
 ):
-    authentication_classes = [registration_mixin.TokenAuthentication]
-    permission_classes = [registration_mixin.IsAuthenticated]
     serializer_class = serializers.PokedexSerializer
     me = None
 
@@ -93,13 +91,12 @@ WHERE connection.follower_id = '9a950263-d13d-417b-a3ed-0cf80c8e0abe' OR connect
 
 
 class ConnectionViewSet(
+    IsAuthenticatedAppMixin,
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
     serializer_class = serializers.CreateConnectionSerializer
     queryset = models.Connection.objects.all()
-    authentication_classes = [registration_mixin.TokenAuthentication]
-    permission_classes = [registration_mixin.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save()
