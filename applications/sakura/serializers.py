@@ -10,8 +10,19 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = (
             "serial_number",
+            "slug",
             "question",
             "theme",
+        )
+
+
+class CapturedCardSerializer(serializers.ModelSerializer):
+    card = QuestionSerializer()
+    class Meta:
+        model = CaptureCard
+        fields = (
+            "card",
+            "solved"
         )
 
 
@@ -21,10 +32,14 @@ class CaptureCardSerializer(serializers.ModelSerializer):
     answer = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        card = attrs.get('card')
+        if self.instance and self.instance.solved:
+            raise serializers.ValidationError("Card already solved")
+
+        card = attrs.get('card', self.instance.card if self.instance else None)
         answer = attrs.pop('answer')
-        if not card.evaluate_question(answer):
-            raise serializers.ValidationError("Respuesta incorrecta")
+        if card is None:
+            raise serializers.ValidationError("Card not provided")
+        attrs["solved"] = card.evaluate_question(answer)
         return attrs
 
     class Meta:
@@ -32,5 +47,6 @@ class CaptureCardSerializer(serializers.ModelSerializer):
         fields = (
             'attendee',
             'card',
-            'answer'
+            'answer',
+            'solved'
         )

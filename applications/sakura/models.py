@@ -34,9 +34,11 @@ class Question(BaseModel):
         return f"{self.serial_number}-{self.theme}"
 
     def evaluate_question(self, answer: str) -> bool:
+        print(f"Evaluating {answer} against {self.answer}")
         evaluation_split = self.evaluation_type.split()
         evaluation_type = evaluation_split[0].lower()
         if evaluation_type == EXACT:
+            print(answer.strip().lower() == self.answer.lower())
             return answer.strip().lower() == self.answer.lower()
         elif evaluation_type == TERMS:
             expected_answer = tokenize(self.answer)
@@ -44,12 +46,15 @@ class Question(BaseModel):
             expected_count, total_count = evaluation_split[1].split('/')
             expected_count = int(expected_count)
             total_count = int(total_count)
+            print(f"{len(expected_answer.intersection(user_answer))} >= {expected_count}")
+            print(len(expected_answer.intersection(user_answer)) >= expected_count)
             return len(expected_answer.intersection(user_answer)) >= expected_count
 
 
 class CaptureCard(BaseModel):
     attendee = models.ForeignKey(PossibleAttendees, related_name="captured_cards", on_delete=models.CASCADE)
     card = models.ForeignKey(Question, related_name="captured_by", on_delete=models.CASCADE)
+    solved = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['attendee', 'card__serial_number']
