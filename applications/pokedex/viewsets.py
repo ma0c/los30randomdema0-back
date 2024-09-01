@@ -71,7 +71,9 @@ WHERE connection.follower_id = '9a950263-d13d-417b-a3ed-0cf80c8e0abe' OR connect
             follower_id=self.me.id
         ).values_list("followed_id", flat=True)
         print(connections)
+        print("Printing profiles")
         for profile in queryset:
+            print(profile)
             if profile.id not in connections:
                 profile.attendee = None
 
