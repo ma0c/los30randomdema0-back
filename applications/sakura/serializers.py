@@ -2,10 +2,21 @@ from rest_framework import serializers
 from rest_framework.fields import HiddenField, CurrentUserDefault
 from rest_framework.relations import SlugRelatedField
 
-from applications.sakura.models import Question, CaptureCard
+from applications.sakura.models import Question, CaptureCard, Category
 
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = (
+            "name",
+            "slug",
+            "color",
+            "image",
+        )
 
 class QuestionSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
     class Meta:
         model = Question
         fields = (
@@ -13,6 +24,7 @@ class QuestionSerializer(serializers.ModelSerializer):
             "slug",
             "question",
             "theme",
+            "category"
         )
 
 

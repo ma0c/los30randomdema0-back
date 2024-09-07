@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from qrcode.image.svg import SvgPathImage
 
-from applications.sakura.models import Question, CaptureCard
+from applications.sakura.models import Question, CaptureCard, Category
 
 
 class CardModelAdmin(admin.ModelAdmin):
@@ -19,3 +19,4 @@ class CardModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, CardModelAdmin)
 admin.site.register(CaptureCard)
+admin.site.register(Category)

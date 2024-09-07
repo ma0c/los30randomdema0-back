@@ -12,6 +12,20 @@ TERMS = 'terminos'
 def tokenize(text: str) -> set:
     return set(re.split(r'\W+|,|-', text.lower()))
 
+class Category(BaseModel):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True)
+    color = models.CharField(max_length=7, default="#000000")
+    image = models.ImageField(upload_to='card-categories/', null=True, blank=True)
+
+    class Meta:
+        ordering = ['name']
+        constraints = [
+            models.UniqueConstraint(fields=['slug'], name='unique_category_slug'),
+        ]
+
+    def __str__(self):
+        return self.name
 
 class Question(BaseModel):
 
@@ -19,6 +33,7 @@ class Question(BaseModel):
     question = models.TextField()
     answer = models.TextField()
     theme = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, related_name="questions", on_delete=models.CASCADE, null=True)
     responsible = models.CharField(max_length=255)
     evaluation_type = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
