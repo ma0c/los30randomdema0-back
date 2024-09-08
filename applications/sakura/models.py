@@ -17,6 +17,9 @@ class Category(BaseModel):
     slug = models.SlugField(unique=True)
     color = models.CharField(max_length=7, default="#000000")
     image = models.ImageField(upload_to='card-categories/', null=True, blank=True)
+    front_image = models.ImageField(upload_to='card-categories-front/', null=True, blank=True)
+    is_special = models.BooleanField(default=False)
+    question_in_category = models.IntegerField(default=5)
 
     class Meta:
         ordering = ['name']

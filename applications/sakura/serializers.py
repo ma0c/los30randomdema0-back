@@ -13,6 +13,9 @@ class CategorySerializer(serializers.ModelSerializer):
             "slug",
             "color",
             "image",
+            "front_image",
+            "is_special",
+            "question_in_category"
         )
 
 class QuestionSerializer(serializers.ModelSerializer):
