@@ -1,5 +1,3 @@
-from lib2to3.fixes.fix_input import context
-
 from rest_framework import serializers
 from rest_framework.fields import HiddenField, CurrentUserDefault
 from rest_framework.relations import SlugRelatedField
