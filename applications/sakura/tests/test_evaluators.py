@@ -53,6 +53,16 @@ class TestEvaluators(TestCase):
             slug="what-is-the-capital-of-france"
         )
 
+        self.number_question = Question(
+            serial_number=5,
+            question="First two numbers",
+            answer="1 y 2",
+            theme="Math",
+            responsible="ma0",
+            evaluation_type=f"{TERMS} 2/2",
+            slug="what-is-the-capital-of-france"
+        )
+
     def test_exact(self):
         assert self.exact_question.evaluate_question("Paris")
 
@@ -84,3 +94,6 @@ class TestEvaluators(TestCase):
 
     def test_terms_accent(self):
         assert self.accent_terms_question.evaluate_question("improvisacion poetica")
+
+    def test_number_question(self):
+        assert self.number_question.evaluate_question("1 2")
