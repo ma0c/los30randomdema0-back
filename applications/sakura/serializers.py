@@ -1,8 +1,10 @@
+from lib2to3.fixes.fix_input import context
+
 from rest_framework import serializers
 from rest_framework.fields import HiddenField, CurrentUserDefault
 from rest_framework.relations import SlugRelatedField
 
-from applications.sakura.models import Question, CaptureCard, Category
+from applications.sakura.models import Question, CaptureCard, Category, CardAttempt
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -55,6 +57,13 @@ class CaptureCardSerializer(serializers.ModelSerializer):
         if card is None:
             raise serializers.ValidationError("Card not provided")
         attrs["solved"] = card.evaluate_question(answer)
+
+        CardAttempt.objects.create(
+            attendee=attrs.get("attendee", self.context['request'].user),
+            card=card,
+            solved=attrs["solved"],
+            answer=answer
+        )
         return attrs
 
     class Meta:

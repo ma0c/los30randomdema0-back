@@ -24,6 +24,16 @@ class TestEvaluators(TestCase):
             slug="what-are-the-colors-of-the-french-flag"
         )
 
+        self.last_name_question = Question(
+            serial_number=3,
+            question="What is the name of the current president of the United States?",
+            answer="Biden",
+            theme="Geography",
+            responsible="ma0",
+            evaluation_type=f"{TERMS}",
+            slug="what-is-the-last-name-of-the-current-president-of-the-united-states"
+        )
+
     def test_exact(self):
         assert self.exact_question.evaluate_question("Paris")
 

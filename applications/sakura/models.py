@@ -52,7 +52,7 @@ class Question(BaseModel):
         return f"{self.serial_number}-{self.theme}"
 
     def evaluate_question(self, answer: str) -> bool:
-        print(f"Evaluating {answer} against {self.answer}")
+        print(f"Evaluating {answer} against {self.answer} using {self.evaluation_type}")
         evaluation_split = self.evaluation_type.split()
         evaluation_type = evaluation_split[0].lower()
         if evaluation_type == EXACT:
@@ -82,3 +82,16 @@ class CaptureCard(BaseModel):
 
     def __str__(self):
         return f"{self.attendee} captured {self.card}"
+
+class CardAttempt(BaseModel):
+    card = models.ForeignKey(Question, related_name="attempts", on_delete=models.CASCADE)
+    attendee = models.ForeignKey(PossibleAttendees, related_name="attempts", on_delete=models.CASCADE)
+    answer = models.TextField()
+    solved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['attendee', 'card__serial_number']
+
+
+    def __str__(self):
+        return f"{self.attendee} attempted {self.card}"

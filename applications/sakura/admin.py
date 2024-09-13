@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from qrcode.image.svg import SvgPathImage
 
-from applications.sakura.models import Question, CaptureCard, Category
+from applications.sakura.models import Question, CaptureCard, Category, CardAttempt
 
 
 class CategoryModelAdmin(admin.ModelAdmin):
@@ -28,9 +28,13 @@ class CardModelAdmin(admin.ModelAdmin):
 
     qr_code.short_description = 'QR Code'
 
-    list_display = ('serial_number', 'theme', 'slug', 'qr_code')
+    list_display = ('serial_number', 'theme', 'question','slug', 'qr_code')
+
+class CardAttemptModelAdmin(admin.ModelAdmin):
+    list_display = ('attendee', 'card', 'solved', 'answer', 'created_at')
 
 
 admin.site.register(Question, CardModelAdmin)
 admin.site.register(CaptureCard)
 admin.site.register(Category, CategoryModelAdmin)
+admin.site.register(CardAttempt, CardAttemptModelAdmin)
