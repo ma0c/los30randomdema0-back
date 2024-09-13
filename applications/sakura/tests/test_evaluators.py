@@ -30,8 +30,27 @@ class TestEvaluators(TestCase):
             answer="Biden",
             theme="Geography",
             responsible="ma0",
-            evaluation_type=f"{TERMS}",
+            evaluation_type=f"{TERMS} 1/1",
             slug="what-is-the-last-name-of-the-current-president-of-the-united-states"
+        )
+
+        self.accent_question = Question(
+            serial_number=4,
+            question="Revolution in spanish",
+            answer="Revolución",
+            theme="Geography",
+            responsible="ma0",
+            evaluation_type=f"{EXACT}",
+            slug="what-is-the-capital-of-france"
+        )
+        self.accent_terms_question = Question(
+            serial_number=4,
+            question="Poetic Improvisation in spanish",
+            answer="Improvisación Poética",
+            theme="Geography",
+            responsible="ma0",
+            evaluation_type=f"{TERMS} 2/2",
+            slug="what-is-the-capital-of-france"
         )
 
     def test_exact(self):
@@ -57,3 +76,11 @@ class TestEvaluators(TestCase):
     def test_terms_dash(self):
         assert self.terms_question.evaluate_question("blue-white-red")
 
+    def test_last_name(self):
+        assert self.last_name_question.evaluate_question("Joe Biden")
+
+    def test_accent(self):
+        assert self.accent_question.evaluate_question("revolucion")
+
+    def test_terms_accent(self):
+        assert self.accent_terms_question.evaluate_question("improvisacion poetica")

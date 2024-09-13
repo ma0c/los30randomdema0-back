@@ -10,7 +10,20 @@ TERMS = 'terminos'
 
 
 def tokenize(text: str) -> set:
-    return set(re.split(r'\W+|,|-', text.lower()))
+    return set(re.split(r'\W+|,|-', sanitize(text)))
+
+def sanitize(text: str) -> str:
+    return text.strip().lower().replace(
+        'á', 'a'
+    ).replace(
+        'é', 'e'
+    ).replace(
+        'í', 'i'
+    ).replace(
+        'ó', 'o'
+    ).replace(
+        'ú', 'u'
+    )
 
 class Category(BaseModel):
     name = models.CharField(max_length=255, unique=True)
@@ -56,8 +69,8 @@ class Question(BaseModel):
         evaluation_split = self.evaluation_type.split()
         evaluation_type = evaluation_split[0].lower()
         if evaluation_type == EXACT:
-            print(answer.strip().lower() == self.answer.lower())
-            return answer.strip().lower() == self.answer.lower()
+            print(sanitize(answer) == sanitize(self.answer))
+            return sanitize(answer) == sanitize(self.answer)
         elif evaluation_type == TERMS:
             expected_answer = tokenize(self.answer)
             user_answer = tokenize(answer)
