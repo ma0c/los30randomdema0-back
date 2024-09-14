@@ -69,7 +69,7 @@ class Leaderboard(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         connections = Profile.objects.filter(
-            ~Q(possibleattendees__name='Ma0'),
+            ~Q(attendee__name='Ma0'),
             is_enabled=True,
             is_active=True,
         ).annotate(connections=Count('following')).filter(connections__gt=0).order_by('-connections')
