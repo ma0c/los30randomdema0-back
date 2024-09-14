@@ -1,0 +1,70 @@
+{% extends 'analytics/base.html' %}
+{% block title %}
+    Leaderboard
+{% endblock %}
+{% block content %}
+    <h1 class="title">Leaderboard</h1>
+    <div class="columns">
+    <div class="column">
+        <h2>
+            Pokemon
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Persona
+                    </th>
+                    <th>
+                        Capturados
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in connections %}
+                    <tr>
+                        <td>
+                                {{ c }}
+
+                        </td>
+                        <td>
+                            {{ c.connections }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="column">
+        <h2>
+            Sakura
+        </h2>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    Persona
+                </th>
+                <th>
+                    Capturados
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in cards %}
+                <tr>
+                    <td>
+                        {{ c }}
+
+                    </td>
+                    <td>
+                        {{ c.cards }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+{% endblock %}

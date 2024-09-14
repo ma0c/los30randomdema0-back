@@ -1,9 +1,12 @@
+from faulthandler import is_enabled
+
 import qrcode
 import urllib.parse
+from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from qrcode.image.svg import SvgPathImage
 
 from applications.registration.models import Registration, PossibleAttendees, AttendeeToken
@@ -57,4 +60,21 @@ class AttendeeProfile(DetailView):
             token.generate_token()
 
         context['app_url'] = urllib.parse.quote_plus(f'https://app.los30randomdema0.com/token/{token.token}')
+        return context
+
+class Leaderboard(TemplateView):
+    template_name = 'analytics/leaderboard.html'
+    context_object_name = 'leaderboard'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        connections = Profile.objects.filter(
+            is_enabled=True,
+            is_active=True
+        ).annotate(connections=Count('following')).filter(connections__gt=0).order_by('-connections')
+        context['connections'] = connections
+        print(connections)
+        cards = PossibleAttendees.objects.all().annotate(cards=Count('captured_cards')).filter(cards__gt=0).order_by('-cards')
+        context['cards'] = cards
+        print(cards)
         return context
