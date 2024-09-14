@@ -29,6 +29,9 @@
             <p><strong>Weed:</strong> {{ registration.get_weed_display }}</p>
             <p><strong>Entry Hour:</strong> {{ registration.entry_hour|date:"D h a" }}</p>
             <p><strong>Exit Hour:</strong> {{ registration.exit_hour|date:"D h a" }}</p>
+            <a href="https://wa.me/{{ attendee.phone|cut:" "|cut:"("|cut:")"|cut:"-"}}?text=Hola%20Ingresa%20a%20la%20aplicacion%20{{ app_url }}">
+                <button>Send Token</button>
+            </a>
         </div>
         <div class="column is-one-third theme-light">
             <figure class="image is-256x256">

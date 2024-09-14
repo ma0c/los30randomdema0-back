@@ -79,5 +79,9 @@ class AttendeeToken(BaseModel):
     attendee = models.ForeignKey(PossibleAttendees, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
 
+    def generate_token(self):
+        self.token = get_random_string(length=32)
+        self.save()
+
     def __str__(self):
         return f"{self.attendee} - {self.token}"

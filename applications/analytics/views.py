@@ -1,11 +1,12 @@
 import qrcode
+import urllib.parse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
 from django.views.generic import ListView, DetailView
 from qrcode.image.svg import SvgPathImage
 
-from applications.registration.models import Registration, PossibleAttendees
+from applications.registration.models import Registration, PossibleAttendees, AttendeeToken
 from applications.pokedex.models import Badge, Profile, Connection
 
 
@@ -51,4 +52,9 @@ class AttendeeProfile(DetailView):
             # is_active=True,
             is_enabled=True
         ).count()
+        token, created = AttendeeToken.objects.get_or_create(attendee=self.object)
+        if created:
+            token.generate_token()
+
+        context['app_url'] = urllib.parse.quote_plus(f'https://app.los30randomdema0.com/token/{token.token}')
         return context
