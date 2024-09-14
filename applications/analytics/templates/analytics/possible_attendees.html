@@ -4,8 +4,15 @@
 {% endblock %}
 {% block content %}
     <h1 class="title">Possible Attendees</h1>
-    <table class="table is-fullwidth sortable">
-        <thead>
+    <input
+          type="text"
+          class="input"
+          id="myInput"
+          onkeyup="myFunction()"
+          placeholder="Buscar"
+          title="Buscar">
+    <table class="table is-fullwidth sortable" id="myTable">
+        <thead class="header">
             <tr>
                 <th>Name</th>
                 <th>Whatsapp</th>
@@ -33,4 +40,20 @@
                 </tr>
             {% endfor %}
         </tbody>
+    <script language="javascript">
+        const myFunction = () => {
+          const trs = document.querySelectorAll('#myTable tr:not(.header)')
+          const filter = document.querySelector('#myInput').value
+          const regex = new RegExp(filter, 'i')
+          const isFoundInTds = td => regex.test(td.innerHTML)
+          const isFound = childrenArr => childrenArr.some(isFoundInTds)
+          const setTrStyleDisplay = ({ style, children }) => {
+            style.display = isFound([
+              ...children // <-- All columns
+            ]) ? '' : 'none'
+          }
+
+          trs.forEach(setTrStyleDisplay)
+        }
+    </script>
 {% endblock %}
