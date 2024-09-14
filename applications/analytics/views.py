@@ -2,7 +2,7 @@ from faulthandler import is_enabled
 
 import qrcode
 import urllib.parse
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
@@ -69,12 +69,17 @@ class Leaderboard(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         connections = Profile.objects.filter(
+            ~Q(possibleattendees__name='Ma0'),
             is_enabled=True,
-            is_active=True
+            is_active=True,
         ).annotate(connections=Count('following')).filter(connections__gt=0).order_by('-connections')
         context['connections'] = connections
-        print(connections)
-        cards = PossibleAttendees.objects.all().annotate(cards=Count('captured_cards')).filter(cards__gt=0).order_by('-cards')
+        cards = PossibleAttendees.objects.filter(
+            ~Q(name='Ma0')
+        ).annotate(
+            cards=Count('captured_cards')
+        ).filter(
+            cards__gt=0
+        ).order_by('-cards')
         context['cards'] = cards
-        print(cards)
         return context
