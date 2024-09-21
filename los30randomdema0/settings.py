@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'applications.pokedex',
     'applications.analytics',
     'applications.sakura',
+    'applications.instagram'
 ]
 
 MIDDLEWARE = [

@@ -23,4 +23,5 @@ urlpatterns = [
     path('pokedex/', include(('applications.pokedex.urls', 'pokedex'), namespace='pokedex')),
     path('analytics/', include(('applications.analytics.urls', 'analytics'), namespace='analytics')),
     path('sakura/', include(('applications.sakura.urls', 'sakura'), namespace='sakura')),
+    path('instagram/', include(('applications.instagram.urls', 'instagram'), namespace='instagram')),
 ]
